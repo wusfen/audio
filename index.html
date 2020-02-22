@@ -39,6 +39,7 @@
 
 
     // 音频上下文
+    AudioContext = window.AudioContext || window.webkitAudioContext
     var audioContext = new AudioContext()
     // 音频源节点
     // var mediaElementAudioSourceNode = new MediaElementAudioSourceNode(audioContext, {mediaElement: document.getElementById('audio')})
