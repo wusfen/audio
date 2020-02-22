@@ -44,7 +44,7 @@
     // 音频源节点
     // var mediaElementAudioSourceNode = new MediaElementAudioSourceNode(audioContext, {mediaElement: document.getElementById('audio')})
     // 音频分析节点
-    var analyserNode = new AnalyserNode(audioContext)
+    var analyserNode = audioContext.createAnalyser()
     // 源节点连接分析节点
     // mediaElementAudioSourceNode.connect(analyserNode)
     // 连接扬声器
