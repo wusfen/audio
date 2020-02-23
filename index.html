@@ -6,10 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>audio</title>
   <style>
-    html{
-      background: url("https://pic2.zhimg.com/v2-1b2dafff1629e5a1974d5565e1b14b91_r.jpg");
-      background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582437272354&di=b9e711ce5a5e9aacc48b46a109335711&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F9b48e698aa775d5a2cbd2ffeb7a9626a8f0f7293.jpg");
-      background-repeat: no-repeat;
+    html {
+      background: no-repeat center url("bg.jpg");
       background-size: cover;
       height: 100%;
     }
@@ -25,7 +23,6 @@
       padding: 1.5em;
       outline: 0;
     }
-
   </style>
   <!-- <script src="https://wusfen.github.io/console.js/dist/console.js"></script> -->
 
@@ -39,9 +36,10 @@
     canvas.style.position = 'absolute'
     canvas.style.width = '100%'
     canvas.style.height = '100%'
-    canvas.style.color = 'rgb(68, 141, 246)'
+    canvas.style.color = 'rgb(250, 250, 255)'
     canvas.style.borderColor = 'rgba(255, 255, 255, 0.5)'
-    canvas.style.outlineColor = 'rgb(156, 71, 214)'
+    canvas.style.outlineColor = 'rgb(255, 128, 226)'
+
     var ctx = canvas.getContext('2d')
 
 
@@ -80,13 +78,16 @@
     // 循环获取频谱可视化
     function draw(analyserNode) {
       var width = 2048
-      // clear
+      // reset
       canvas.width = width
       canvas.height = width
 
+      ctx.lineWidth = 2
+      ctx.lineCap = 'round'
+
       // 阴影
       ctx.shadowOffsetX = 15
-      ctx.shadowOffsetY = 150
+      ctx.shadowOffsetY = 100
       ctx.shadowBlur = 25
       ctx.shadowColor = canvas.style.outlineColor
 
@@ -100,7 +101,7 @@
       ctx.strokeStyle = canvas.style.borderColor
       ctx.beginPath()
       array.forEach(function (y, x) {
-        ctx.lineTo(x, width/2 + (y-128)*1)
+        ctx.lineTo(x, width / 2 + (y - 128) * 1.5)
       })
       ctx.stroke()
 
@@ -134,7 +135,7 @@
       // 循环
       setTimeout(() => {
         draw(analyserNode)
-      }, draw.timeGap||16)
+      }, draw.timeGap || 16)
     }
 
   </script>
