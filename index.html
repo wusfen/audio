@@ -6,6 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>audio</title>
   <style>
+    html{
+      background: url("https://pic2.zhimg.com/v2-1b2dafff1629e5a1974d5565e1b14b91_r.jpg");
+      background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582437272354&di=b9e711ce5a5e9aacc48b46a109335711&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F9b48e698aa775d5a2cbd2ffeb7a9626a8f0f7293.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+    }
+
     body {
       margin: 0;
     }
@@ -18,11 +26,8 @@
       outline: 0;
     }
 
-    canvas {
-      display: block;
-    }
   </style>
-  <script src="https://wusfen.github.io/console.js/dist/console.js"></script>
+  <!-- <script src="https://wusfen.github.io/console.js/dist/console.js"></script> -->
 
 </head>
 
@@ -34,7 +39,9 @@
     canvas.style.position = 'absolute'
     canvas.style.width = '100%'
     canvas.style.height = '100%'
-    canvas.style.background = '#e7f7f8'
+    canvas.style.color = 'rgb(68, 141, 246)'
+    canvas.style.borderColor = 'rgba(255, 255, 255, 0.5)'
+    canvas.style.outlineColor = 'rgb(156, 71, 214)'
     var ctx = canvas.getContext('2d')
 
 
@@ -53,10 +60,18 @@
     // 麦克风
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(function (stream) {
+        console.log('getUserMedia', stream)
         // 媒体流源节点
         var mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream)
+        // // 音频分析节点
+        // var analyserNode = audioContext.createAnalyser()
         // 连接分析节点
         mediaStreamAudioSourceNode.connect(analyserNode)
+        // // 画图
+        // draw(analyserNode)
+      })
+      .catch(function (e) {
+        console.error('getUserMedia', e)
       })
 
     // 画图
@@ -73,7 +88,7 @@
       ctx.shadowOffsetX = 15
       ctx.shadowOffsetY = 150
       ctx.shadowBlur = 25
-      ctx.shadowColor = "rgba(100, 100, 100, 0.5)"
+      ctx.shadowColor = canvas.style.outlineColor
 
       // 分析节点取样
       analyserNode.fftSize = width * 2
@@ -82,20 +97,21 @@
       var array = new Uint8Array(analyserNode.frequencyBinCount)
       analyserNode.getByteTimeDomainData(array)
 
-      ctx.strokeStyle = '#aaa'
+      ctx.strokeStyle = canvas.style.borderColor
       ctx.beginPath()
       array.forEach(function (y, x) {
-        ctx.lineTo(x, width/2 + y*2 - 128*2)
+        ctx.lineTo(x, width/2 + (y-128)*1)
       })
       ctx.stroke()
 
       // 频谱数据
       var array = new Uint8Array(analyserNode.frequencyBinCount)
       analyserNode.getByteFrequencyData(array)
+      // console.log(array)
 
       // 一半
-      ctx.strokeStyle = '#0af'
-      ctx.fillStyle = '#0af'
+      ctx.strokeStyle = canvas.style.color
+      ctx.fillStyle = canvas.style.color
       ctx.beginPath()
       // ctx.lineTo(width / 2, 0)
       array.forEach(function (y, x) {
@@ -105,8 +121,8 @@
       ctx.stroke()
 
       // 另一半
-      ctx.strokeStyle = '#0af'
-      ctx.fillStyle = '#0af'
+      ctx.strokeStyle = canvas.style.color
+      ctx.fillStyle = canvas.style.color
       ctx.beginPath()
       // ctx.lineTo((width / 2), 0)
       array.forEach(function (y, x) {
